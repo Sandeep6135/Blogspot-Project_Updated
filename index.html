@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nexus — Exploring ideas at the intersection of technology, nature, and innovation.">
+    <title>Nexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="Nexus.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+
+        /* Scroll-triggered animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Hero gradient animation */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #6B8DD6, #8E37D7);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        /* Float animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+
+        /* Navbar transition */
+        .navbar-scrolled {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+        .navbar-scrolled .nav-text { color: #374151 !important; }
+        .navbar-scrolled .nav-text:hover { color: #6366f1 !important; }
+
+        /* Card hover */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Image hover zoom */
+        .img-zoom {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .img-zoom:hover {
+            transform: scale(1.05);
+        }
+
+        /* Button ripple */
+        .btn-pulse {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-pulse::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn-pulse:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Nav link underline */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: #6366f1;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Particle dots */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.5); }
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#home" class="flex items-center gap-3 group">
+                <img src="Nexus.png" alt="Nexus Logo" class="h-10 w-10 rounded-lg transition-transform duration-300 group-hover:rotate-12">
+                <span class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Nexus</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#home" class="nav-link nav-text text-white font-medium transition-colors">Home</a>
+                <a href="#explore" class="nav-link nav-text text-white font-medium transition-colors">Explore</a>
+                <a href="#about" class="nav-link nav-text text-white font-medium transition-colors">About</a>
+                <a href="#contact" class="nav-link nav-text text-white font-medium transition-colors">Contact</a>
+            </div>
+            <a href="Material/Login/Sign_in.html" class="hidden md:inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white border border-white/30 px-5 py-2.5 rounded-full font-medium hover:bg-white hover:text-indigo-700 transition-all duration-300 btn-pulse">
+                Join Nexus
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+            <!-- Mobile menu button -->
+            <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white/95 backdrop-blur-lg border-t px-6 py-4 space-y-3 shadow-lg">
+            <a href="#home" class="block py-2 text-gray-700 font-medium hover:text-indigo-600 transition-colors">Home</a>
+            <a href="#explore" class="block py-2 text-gray-700 font-medium hover:text-indigo-600 transition-colors">Explore</a>
+            <a href="#about" class="block py-2 text-gray-700 font-medium hover:text-indigo-600 transition-colors">About</a>
+            <a href="#contact" class="block py-2 text-gray-700 font-medium hover:text-indigo-600 transition-colors">Contact</a>
+            <a href="Material/Login/Sign_in.html" class="block py-2 text-indigo-600 font-semibold">Join Nexus →</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center animated-gradient overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <!-- Floating decorative shapes -->
+        <div class="particle w-4 h-4 top-[15%] left-[10%]" style="animation-delay: 0s;"></div>
+        <div class="particle w-3 h-3 top-[25%] right-[15%]" style="animation-delay: 0.5s;"></div>
+        <div class="particle w-5 h-5 bottom-[20%] left-[20%]" style="animation-delay: 1s;"></div>
+        <div class="particle w-3 h-3 bottom-[30%] right-[25%]" style="animation-delay: 1.5s;"></div>
+        <div class="particle w-4 h-4 top-[50%] left-[5%]" style="animation-delay: 2s;"></div>
+        <div class="particle w-6 h-6 top-[10%] right-[30%]" style="animation-delay: 2.5s;"></div>
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl float" style="animation-delay: 0s;"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-300/10 rounded-full blur-3xl float" style="animation-delay: 1.5s;"></div>
+
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <img src="Nexus.png" alt="Nexus" class="h-24 w-24 mx-auto mb-8 rounded-2xl shadow-2xl float ring-4 ring-white/20">
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                Welcome to <span class="bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">Nexus</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Where ideas converge. Explore technology, nature, and innovation — all in one place.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#explore" class="inline-flex items-center justify-center gap-2 bg-white text-indigo-700 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 btn-pulse">
+                    Start Exploring
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </a>
+                <a href="Material/Login/Sign_in.html" class="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/30 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/20 transition-all duration-300 backdrop-blur-sm hover:-translate-y-1">
+                    Join Nexus
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </div>
+    </section>
+
+    <!-- Explore Section -->
+    <section id="explore" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <span class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-semibold mb-4 tracking-wide uppercase">Explore</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Discover. Learn. Grow.</h2>
+                <p class="text-lg text-gray-500 max-w-2xl mx-auto">Dive into topics that shape our world — from the beauty of nature to the frontiers of technology.</p>
+            </div>
+
+            <!-- Card 1: Nature -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 mb-28">
+                <div class="lg:w-1/2 reveal-left">
+                    <div class="overflow-hidden rounded-2xl shadow-lg relative group">
+                        <img loading="lazy" src="Material/Pics/Nature.jpg" alt="Nature" class="w-full h-80 object-cover img-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 reveal-right">
+                    <span class="inline-block px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold mb-4 tracking-wide uppercase">Nature</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">The Source of All Life</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">Nature is the ultimate source of our living, comprising all living and non-living things. Everyone is interdependent, helping to maintain the ecosystem. Plants, animals, and humans depend on nature for survival, supplying oxygen, sunlight, soil, water, and other essential components.</p>
+                    <p class="text-gray-600 leading-relaxed mb-6">Nature encompasses everything we see around us — trees, flowers, plants, animals, sky, mountains, and more. The vibrant colors contribute to the beauty of our Earth.</p>
+                    <div class="flex gap-3">
+                        <button class="px-6 py-2.5 bg-green-500 text-white rounded-full font-medium hover:bg-green-600 transition-all duration-300 hover:shadow-lg hover:shadow-green-200 hover:-translate-y-0.5 btn-pulse">Agree ✓</button>
+                        <button class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300 hover:-translate-y-0.5">Suggest Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider mb-28"></div>
+
+            <!-- Card 2: Hacker -->
+            <div class="flex flex-col lg:flex-row-reverse items-center gap-12 mb-28">
+                <div class="lg:w-1/2 reveal-right">
+                    <div class="overflow-hidden rounded-2xl shadow-lg relative group">
+                        <img loading="lazy" src="Material/Pics/Hacker.jpg" alt="Hacker" class="w-full h-80 object-cover img-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 reveal-left">
+                    <span class="inline-block px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold mb-4 tracking-wide uppercase">Cyber Security</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">The Art of Hacking</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">The term "hacker" originally referred to skilled programmers proficient in machine code and operating systems. These individuals excelled in problem-solving and often interpreted competitors' code for small software companies.</p>
+                    <p class="text-gray-600 leading-relaxed mb-6">Today, ethical hacking involves authorized access to systems, typically under a contractual agreement, to identify and fix vulnerabilities before malicious actors can exploit them.</p>
+                    <div class="flex gap-3">
+                        <button class="px-6 py-2.5 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition-all duration-300 hover:shadow-lg hover:shadow-red-200 hover:-translate-y-0.5 btn-pulse">Agree ✓</button>
+                        <button class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300 hover:-translate-y-0.5">Suggest Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider mb-28"></div>
+
+            <!-- Card 3: Pollution -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 mb-28">
+                <div class="lg:w-1/2 reveal-left">
+                    <div class="overflow-hidden rounded-2xl shadow-lg relative group">
+                        <img loading="lazy" src="Material/Pics/Pollution.jpeg" alt="Pollution" class="w-full h-80 object-cover img-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 reveal-right">
+                    <span class="inline-block px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold mb-4 tracking-wide uppercase">Environment</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">The Pollution Crisis</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">Pollution signifies the presence of unwanted substances in our environment, often resulting from human activities. The urgent need to address pollution arises from its detrimental effects on the planet.</p>
+                    <p class="text-gray-600 leading-relaxed mb-6">Air quality is affected by carbon dioxide emissions and pollutants, which contribute to global warming and impact quality of life in ways that may not be immediately visible.</p>
+                    <div class="flex gap-3">
+                        <button class="px-6 py-2.5 bg-amber-500 text-white rounded-full font-medium hover:bg-amber-600 transition-all duration-300 hover:shadow-lg hover:shadow-amber-200 hover:-translate-y-0.5 btn-pulse">Agree ✓</button>
+                        <button class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300 hover:-translate-y-0.5">Suggest Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider mb-28"></div>
+
+            <!-- Card 4: Super Computer -->
+            <div class="flex flex-col lg:flex-row-reverse items-center gap-12">
+                <div class="lg:w-1/2 reveal-right">
+                    <div class="overflow-hidden rounded-2xl shadow-lg relative group">
+                        <img loading="lazy" src="Material/Pics/SuperComputer.jpg" alt="Super Computer" class="w-full h-80 object-cover img-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 reveal-left">
+                    <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold mb-4 tracking-wide uppercase">Technology</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">Supercomputing Power</h3>
+                    <p class="text-gray-600 leading-relaxed mb-4">India is making significant strides in supercomputing, now ranked fourth globally, following the US, China, and Germany.</p>
+                    <p class="text-gray-600 leading-relaxed mb-6">Supercomputers are utilized in diverse fields, including weather prediction, seismic activity analysis, cryptology, and much more — pushing the boundaries of what's computationally possible.</p>
+                    <div class="flex gap-3">
+                        <button class="px-6 py-2.5 bg-blue-500 text-white rounded-full font-medium hover:bg-blue-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 btn-pulse">Agree ✓</button>
+                        <button class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all duration-300 hover:-translate-y-0.5">Suggest Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-gradient-to-br from-gray-50 to-indigo-50/50">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="reveal">
+                <span class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-semibold mb-4 tracking-wide uppercase">About</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12">The Mind Behind Nexus</h2>
+            </div>
+            <div class="reveal-scale">
+                <div class="relative inline-block mb-8">
+                    <img loading="lazy" src="Material/Pics/Owner/Sandeep.png" alt="Sandeep" class="w-48 h-48 rounded-full object-cover shadow-xl ring-4 ring-white">
+                    <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-green-400 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Sandeep</h3>
+                <p class="text-indigo-600 font-medium mb-6">Creator & Developer</p>
+                <p class="text-gray-600 text-lg leading-relaxed max-w-2xl mx-auto mb-4">Hello! I'm Sandeep, the developer behind Nexus. Currently a student at Sainik School Balachadi, Gujarat. I built this platform to share ideas and connect with curious minds around the world.</p>
+                <p class="text-gray-600 text-lg leading-relaxed max-w-2xl mx-auto">I'm always open to suggestions and feedback — let's explore and build something amazing together!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-white">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12 reveal">
+                <span class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-sm font-semibold mb-4 tracking-wide uppercase">Contact</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+                <p class="text-lg text-gray-500">Have thoughts, ideas, or suggestions? I'd love to hear from you.</p>
+            </div>
+            <div class="reveal-scale">
+                <form id="contactForm" class="bg-gray-50 rounded-2xl p-8 md:p-12 shadow-sm border border-gray-100 card-hover">
+                    <div class="mb-6">
+                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your name" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all duration-300 text-gray-700">
+                    </div>
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="you@example.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all duration-300 text-gray-700">
+                    </div>
+                    <div class="mb-8">
+                        <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Share your thoughts..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all duration-300 text-gray-700 resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-indigo-700 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-200 active:scale-[0.98] btn-pulse">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex items-center gap-3">
+                    <img src="Nexus.png" alt="Nexus" class="h-9 w-9 rounded-lg">
+                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Nexus</span>
+                </div>
+                <div class="flex gap-8 text-gray-400">
+                    <a href="#home" class="hover:text-white transition-colors duration-300">Home</a>
+                    <a href="#explore" class="hover:text-white transition-colors duration-300">Explore</a>
+                    <a href="#about" class="hover:text-white transition-colors duration-300">About</a>
+                    <a href="#contact" class="hover:text-white transition-colors duration-300">Contact</a>
+                </div>
+            </div>
+            <div class="section-divider my-8 !bg-gradient-to-r !from-transparent !via-gray-700 !to-transparent"></div>
+            <p class="text-gray-500 text-sm text-center">&copy; 2026 Nexus. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll-reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Contact form handler
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            if (name && email && message) {
+                alert('Thanks for your message! I\'ll get back to you soon.');
+                this.reset();
+            }
+        });
+    </script>
+
+</body>
+</html>

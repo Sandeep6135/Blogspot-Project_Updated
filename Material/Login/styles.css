@@ -1,0 +1,73 @@
+/* ===================================
+   Nexus — Shared Login Styles
+   =================================== */
+
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Smooth transitions on all interactive elements */
+a, button, input, textarea {
+    transition: all 0.3s ease;
+}
+
+/* Focus ring for accessibility */
+input:focus-visible,
+button:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Form input hover state */
+input:hover,
+textarea:hover {
+    border-color: #c7d2fe;
+}
+
+/* Button active state */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Selection color */
+::selection {
+    background: #c7d2fe;
+    color: #312e81;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+/* Smooth page load */
+body {
+    opacity: 0;
+    animation: pageLoad 0.4s ease-out forwards;
+}
+
+@keyframes pageLoad {
+    to {
+        opacity: 1;
+    }
+}
